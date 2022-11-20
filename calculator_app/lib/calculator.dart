@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last
-
 import 'package:flutter/material.dart';
 
 class Calculator extends StatefulWidget {
@@ -12,7 +10,7 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   Widget numBtn(String btnText, Color txtColor, Color btnColor) {
     return ElevatedButton(
-      onPressed: () => {},
+      onPressed: () => {calculate(btnText)},
       child: Text(
         btnText,
         style: TextStyle(
@@ -49,7 +47,7 @@ class _CalculatorState extends State<Calculator> {
                 Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    "0",
+                    text,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.white,
@@ -121,7 +119,7 @@ class _CalculatorState extends State<Calculator> {
                   ),
                   style: ElevatedButton.styleFrom(
                       shape: StadiumBorder(),
-                      backgroundColor: Colors.grey[850])!,
+                      backgroundColor: Colors.grey[850]),
                 ),
                 numBtn('.', Colors.black, Colors.grey),
                 numBtn('=', Colors.white, Colors.orange)
@@ -131,5 +129,49 @@ class _CalculatorState extends State<Calculator> {
         ),
       ),
     );
+  }
+
+  //logic part
+
+  int firstNum = 0;
+  int secondNum = 0;
+  String result = "";
+  String text = "";
+  String operation = "";
+
+  void calculate(String btnText) {
+    if (btnText == "C") {
+      result = "";
+      text = "";
+      firstNum = 0;
+      secondNum = 0;
+    } else if (btnText == "+" ||
+        btnText == "-" ||
+        btnText == "x" ||
+        btnText == "/") {
+      firstNum = int.parse(text);
+      result = "";
+      operation = btnText;
+    } else if (btnText == "=") {
+      secondNum = int.parse(text);
+      if (operation == "+") {
+        result = (firstNum + secondNum).toString();
+      }
+      if (operation == "-") {
+        result = (firstNum - secondNum).toString();
+      }
+
+      if (operation == "x") {
+        result = (firstNum * secondNum).toString();
+      }
+      if (operation == "/") {
+        result = (firstNum / secondNum).toString();
+      }
+    } else {
+      result = int.parse(text + btnText).toString();
+    }
+    setState(() {
+      text = result;
+    });
   }
 }
